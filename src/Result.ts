@@ -2,6 +2,7 @@ import { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import { L, Test } from "ts-toolbelt";
 
 import type { Field, InlineFragment, NamedType, Selection, SelectionSet } from "./AST";
+import type { Selection as SchemaSelection } from "./Selection";
 
 // @note `Result` takes a root `Type` (TS) and `SelectionSet` (GQL) and recursively walks the
 // array of `Selection` nodes's (i.e `Field`, `InlineFragment`, or `FragmentSpread` nodes)
@@ -15,44 +16,37 @@ export type Result<
   Selected extends SelectionSet<ReadonlyArray<Selection>> | undefined,
 > =
   // Lists
-  Parent extends Array<infer T> | ReadonlyArray<infer T>
-    ? ReadonlyArray<Result<Schema, T, Selected>>
+  Parent extends Array<infer T> | ReadonlyArray<infer T> ? ReadonlyArray<Result<Schema, T, Selected>>
     : // Objects
     Parent extends Record<string, any>
       ? Selected extends SelectionSet<ReadonlyArray<Selection>>
-        ? HasInlineFragment<Selected> extends Test.Pass
-          ? SpreadFragments<Schema, Selected>
-          : {
+        ? HasInlineFragment<Selected> extends Test.Pass ? SpreadFragments<Schema, Selected>
+        : {
+          readonly [
             // @todo cleanup mapped typed field name mapping
-            readonly [
-              F in Selected["selections"][number] as InferName<F>
-            ]: InferResult<F, Schema, Parent>;
-          }
-        : never
+
+            F in Selected["selections"][number] as InferName<F>
+          ]: InferResult<F, Schema, Parent>;
+        }
+      : never
     : // Scalars
     Parent;
 
-type InferName<F> =
-  F extends Field<infer Name, any, any, infer AliasName>
-    ? AliasName extends string 
-      ? AliasName
-      : Name
-    : never;
+type InferName<F> = F extends Field<infer Name, any, any, infer AliasName> ? AliasName extends string ? AliasName
+: Name
+  : never;
 
 type InferResult<
   F,
   Schema extends Record<string, any>,
-  Parent extends Record<string, any>
-> =
-  F extends Field<infer Name, any, infer SS, any>
-    ? Result<Schema, InferParent<Parent, Name>, SS>
-    : never
+  Parent extends Record<string, any>,
+> = F extends Field<infer Name, any, infer SS, any> ? Result<Schema, InferParent<Parent, Name>, SS>
+  : never;
 
 /* @note support parameterized fields */
-type InferParent<Parent extends Record<string, any>, Name extends string> =
-  Parent[Name] extends (variables: any) => infer T
-    ? T
-    : Parent[Name]
+type InferParent<Parent extends Record<string, any>, Name extends string> = Parent[Name] extends
+  (variables: any) => infer T ? T
+  : Parent[Name];
 
 export type SpreadFragments<
   Schema extends Record<string, any>,
@@ -94,8 +88,6 @@ type HasInlineFragment<T extends SelectionSet<any> | undefined> = T extends Sele
 
 type Merge<M, N> = Omit<M, keyof N> & N;
 
-export type SelectionResult<TSelection> =
-  TSelection extends { toQuery(opts: any): TypedDocumentNode<infer ResultType, infer _VariablesType> }
-    ? ResultType
-    : never;
-
+export type SelectionResult<TSelection> = TSelection extends
+  { toQuery(opts: any): TypedDocumentNode<infer ResultType, infer _VariablesType> } ? ResultType
+  : never;
