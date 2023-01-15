@@ -13,6 +13,7 @@
   },
   "scripts": {
     "build": "tsc -b",
+    "prepublishOnly": "pnpm run build:release",
     "build:release": "tsc --build tsconfig.release.json",
     "clean": "rm -rf dist tsconfig.tsbuildinfo tsconfig.release.tsbuildinfo",
     "dev": "tsc -b -w",
