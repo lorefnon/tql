@@ -1,6 +1,6 @@
 # Installation
 
-`npm install -S @timkendall/tql@beta`
+`npm install -S @lorefnon/tql@beta`
 
 ## Deno Support
 

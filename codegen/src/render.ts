@@ -68,10 +68,10 @@ export const render = (sdl: string): string => {
       inlineFragment,
       argument,
       selectionSet
-     } from '@timkendall/tql'
+     } from '@lorefnon/tql'
 
-     export type { Result, SelectionResult, Variables } from '@timkendall/tql'
-     export { $ } from '@timkendall/tql'
+     export type { Result, SelectionResult, Variables } from '@lorefnon/tql'
+     export { $ } from '@lorefnon/tql'
 
      ` +
     `
