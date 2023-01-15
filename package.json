@@ -22,6 +22,7 @@
   ],
   "scripts": {
     "build": "tsc -b",
+    "prepublishOnly": "pnpm run build:release",
     "build:release": "tsc --build tsconfig.release.json",
     "build:website": "cd ./website && npm run build",
     "clean": "rm -rf dist tsconfig.tsbuildinfo tsconfig.release.tsbuildinfo",
