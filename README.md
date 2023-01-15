@@ -1,6 +1,6 @@
 # TQL
 
-> 🚧 We are getting close to `1.0` but this is still **pre-production software** at this point, see the **[current limitations](./CURRENT_LIMITATIONS.md)**.
+> 🚧 This is a personal fork of [@timkendall/tql](https://github.com/timkendall/tql) and changes will be contributed to upstream. Please use [@timkendall/tql] unless you know what you are doing.
 
 **tql** is a TypeScript GraphQL query builder.
 
