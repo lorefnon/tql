@@ -1,6 +1,6 @@
 # TQL
 
-> 🚧 This is a personal fork of [@timkendall/tql](https://github.com/timkendall/tql) and changes will be contributed to upstream. Please use [@timkendall/tql] unless you know what you are doing.
+> 🚧 This is fork is intended to be a continuation of [@timkendall/tql](https://github.com/timkendall/tql) which is no longer under development.
 
 **tql** is a TypeScript GraphQL query builder.
 
@@ -16,11 +16,11 @@ Try out our pre-compiled Star Wars GraphQL SDK on [CodeSandbox](https://codesand
 
 ## Installation
 
-1. `npm install @timkendall/tql@beta`
+1. `npm install @lorefnon/tql@beta`
 
    * **TypeScript 4.1+** is required for [Recursive Conditional Type](https://devblogs.microsoft.com/typescript/announcing-typescript-4-1/#recursive-conditional-types) support
 
-2. Generate an SDK with `npx @timkendall/tql-gen <schema> -o sdk.ts`
+2. Generate an SDK with `npx @lorefnon/tql-gen <schema> -o sdk.ts`
 
   `<schema>` can be a path to local file or an http endpoint url.
 
@@ -70,7 +70,7 @@ const QUERY = query((t) => [
 
     t.starships((t) => [t.id(), t.name()]),
   ]),
-]).toQuery({ name: 'Example' })
+]).build({ name: 'Example' })
 
 // type-safe result and variables 👍
 const { data } = useQuery(QUERY, { variables: { id: '1011' }})
