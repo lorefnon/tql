@@ -2,7 +2,7 @@
 
 Todo
 
-## `.toQuery(options: QueryOptions)`
+## `.build(options: QueryOptions)`
 
 ## `.toSelectionSet`
 

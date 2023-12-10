@@ -64,8 +64,7 @@ export class Selection<
     return inlineFragment(namedType(this.type), selectionSet(this.selections));
   }
 
-  // toOperation? toDocument?
-  toQuery(options?: OperationOpts): TypedDocumentNode<
+  build(options?: OperationOpts): TypedDocumentNode<
     Result<Schema, Schema[RootType], AST.SelectionSet<T>>,
     Variables<Schema, Schema[RootType], AST.SelectionSet<T>>
   > {
@@ -99,7 +98,16 @@ export class Selection<
     >;
   }
 
-  // @todo toRequest (converts to node-fetch API compatible `Request` object)
+  /** 
+   * @deprecated - Retained for backward compatibility 
+   * @use build
+   */
+  toQuery(options?: OperationOpts): TypedDocumentNode<
+    Result<Schema, Schema[RootType], AST.SelectionSet<T>>,
+    Variables<Schema, Schema[RootType], AST.SelectionSet<T>>
+  > {
+    return this.build(options);
+  }
 
   toString(options?: OperationOpts) {
     return print(this.toQuery(options));
