@@ -1,6 +1,6 @@
 {
   "name": "@lorefnon/tql-gen",
-  "version": "0.0.0-p.1",
+  "version": "2.0.0",
   "description": "Code generator for @lorefnon/tql",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
