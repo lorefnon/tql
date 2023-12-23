@@ -205,13 +205,13 @@ export const transform = (
 
       return code `
         ${/* selector interface */ ""}
-        interface I${type.name}Selector {
+        export interface I${type.name}Selector {
           readonly __typename: () => Field<"__typename">
           ${fields.map(printSignature).join("\n")}
         }
 
         ${/* selector object */ ""}
-        const ${typename}Selector: I${typename}Selector = {
+        export const ${typename}Selector: I${typename}Selector = {
           __typename: () => field("__typename"),
           ${fields.map(printMethod).join("\n")}
         }
@@ -243,7 +243,7 @@ export const transform = (
 
       return code `
         ${/* selector interface */ ""}
-        interface I${type.name}Selector {
+        export interface I${type.name}Selector {
           readonly __typename: () => Field<"__typename">
           
           ${fields.map(printSignature).join("\n")}
@@ -263,7 +263,7 @@ export const transform = (
         }
 
         ${/* selector object */ ""}
-        const ${typename}Selector: I${typename}Selector = {
+        export const ${typename}Selector: I${typename}Selector = {
           __typename: () => field("__typename"),
           
           ${fields.map(printMethod).join("\n")}
@@ -321,7 +321,7 @@ export const transform = (
 
       return code `
         ${/* selector interface */ ""}
-        interface I${type.name}Selector {
+        export interface I${type.name}Selector {
           readonly __typename: () => Field<"__typename">
 
           readonly on: <T extends ReadonlyArray<Selection>, F extends ${
@@ -339,7 +339,7 @@ export const transform = (
         }
 
         ${/* selector object */ ""}
-        const ${typename}Selector: I${typename}Selector = {
+        export const ${typename}Selector: I${typename}Selector = {
           __typename: () => field("__typename"),
           
           on: (
