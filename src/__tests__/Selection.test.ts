@@ -1,6 +1,6 @@
-import { Selection } from "../Selection";
 import { buildSchema } from "graphql";
 import { argument, field, selectionSet } from "../AST";
+import { Selection } from "../Selection";
 
 describe("Selection", () => {
   it.todo("is an Array of Selection AST objects");
@@ -29,7 +29,7 @@ describe("Selection", () => {
         name: String!
       }
     `,
-      { noLocation: true }
+      { noLocation: true },
     );
 
     const selection = new Selection(schema, "Mutation", [
@@ -40,28 +40,29 @@ describe("Selection", () => {
             name: "John Doe",
           }),
         ],
-        selectionSet([field("id")])
+        selectionSet([field("id")]),
       ),
     ]);
 
     expect(
       selection.toString({
         queryName: "createUser",
-      })
-    ).toMatchInlineSnapshot(`
-      "mutation createUser {
-        createUser(user: {name: \\"John Doe\\"}) {
-          id
-        }
-      }"
-    `);
+      }),
+    )
+      .toMatchInlineSnapshot(`
+"mutation createUser {
+  createUser(user: {name: "John Doe"}) {
+    id
+  }
+}"
+`);
 
     expect(selection.toString()).toMatchInlineSnapshot(`
-      "mutation Anonymous {
-        createUser(user: {name: \\"John Doe\\"}) {
-          id
-        }
-      }"
-    `);
+"mutation Anonymous {
+  createUser(user: {name: "John Doe"}) {
+    id
+  }
+}"
+`);
   });
 });

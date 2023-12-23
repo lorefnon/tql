@@ -3,7 +3,7 @@ import { render } from "../render";
 describe.skip("Codegen", () => {
   describe("schema", () => {
     describe("scalars", () => {
-      it("converts ScalarTypes to primitives", () => {
+      it("converts ScalarTypes to primitives", async () => {
         const input = `
           scalar String
           scalar Int
@@ -12,7 +12,7 @@ describe.skip("Codegen", () => {
           scalar Boolean
         `;
 
-        const output = render(input);
+        const output = await render(input);
 
         expect(output).toBe(
           expect.stringContaining(`
@@ -23,16 +23,16 @@ describe.skip("Codegen", () => {
             ID: string
             Boolean: boolean
           }
-        `)
+        `),
         );
       });
 
-      it("converts custom scalars to string types", () => {
+      it("converts custom scalars to string types", async () => {
         const input = `
           scalar DateTime
         `;
 
-        const output = render(input);
+        const output = await render(input);
 
         expect(output).toBe(
           expect.stringContaining(`
@@ -44,13 +44,13 @@ describe.skip("Codegen", () => {
             Boolean: boolean
             DateTime: string
           }
-        `)
+        `),
         );
       });
     });
 
     describe("enums", () => {
-      it("converts EnumTypes to enums", () => {
+      it("converts EnumTypes to enums", async () => {
         const input = `
           enum Foo {
             BAR
@@ -58,7 +58,7 @@ describe.skip("Codegen", () => {
           }
         `;
 
-        const output = render(input);
+        const output = await render(input);
 
         expect(output).toBe(
           expect.stringContaining(`
@@ -70,7 +70,7 @@ describe.skip("Codegen", () => {
             BAR = 'BAR',
             BAZ = 'BAZ'
           }
-        `)
+        `),
         );
       });
     });
@@ -107,13 +107,13 @@ describe.skip("Codegen", () => {
 
     describe("interfaces", () => {
       it.todo(
-        "generates an `on` method for defining an `InlineFragment` selection"
+        "generates an `on` method for defining an `InlineFragment` selection",
       );
     });
 
     describe("unions", () => {
       it.todo(
-        "generates an `on` method for defining an `InlineFragment` selection"
+        "generates an `on` method for defining an `InlineFragment` selection",
       );
     });
   });

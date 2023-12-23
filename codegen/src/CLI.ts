@@ -1,4 +1,4 @@
-import fs from "fs-extra";
+import fs from "fs/promises";
 import { buildClientSchema, getIntrospectionQuery, printSchema } from "graphql";
 import fetch from "node-fetch";
 import path from "path";
@@ -12,7 +12,7 @@ run().catch((e) => {
 });
 
 async function run() {
-  const argv = Yargs(process.argv.slice(2))
+  const argv = await Yargs(process.argv.slice(2))
     .usage(
       "$0 <schema>",
       "Generate a fluent TypeScript client for your GraphQL API.",
@@ -27,7 +27,8 @@ async function run() {
     })
     .alias("o", "output")
     .demandOption(["schema"])
-    .help("help").argv;
+    .help("help")
+    .argv;
 
   const schemaPath = argv.schema;
 
@@ -37,7 +38,7 @@ async function run() {
     })
     : await localSchema(schemaPath);
 
-  const renderedSchema = render(schema);
+  const renderedSchema = await render(schema);
 
   if (argv.output) {
     const outputPath = path.resolve(argv.output);
@@ -103,7 +104,7 @@ async function remoteSchema(url: string, options: {
       operationName: "IntrospectionQuery",
       query: getIntrospectionQuery(),
     }),
-  }).then((res) => res.json());
+  }).then((res) => res.json() as Promise<any>);
 
   if (errors) {
     throw new Error("Error fetching remote schema!");
