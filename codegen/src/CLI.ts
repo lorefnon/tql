@@ -1,6 +1,5 @@
 import fs from "fs/promises";
 import { buildClientSchema, getIntrospectionQuery, printSchema } from "graphql";
-import fetch from "node-fetch";
 import path from "path";
 import Yargs from "yargs/yargs";
 
@@ -94,6 +93,7 @@ async function localSchema(path: string) {
 async function remoteSchema(url: string, options: {
   headers: Record<string, string>;
 }) {
+  const { default: fetch } = await import("node-fetch");
   const { data, errors } = await fetch(url, {
     method: "post",
     headers: {
