@@ -1,22 +1,22 @@
 import {
-  GraphQLSchema,
   ASTVisitor,
-  Kind,
-  GraphQLArgument,
-  GraphQLField,
-  GraphQLObjectType,
-  GraphQLNonNull,
-  GraphQLScalarType,
-  GraphQLEnumType,
-  GraphQLUnionType,
-  GraphQLInterfaceType,
   DocumentNode,
+  GraphQLArgument,
+  GraphQLEnumType,
+  GraphQLField,
+  GraphQLInterfaceType,
+  GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLScalarType,
+  GraphQLSchema,
+  GraphQLUnionType,
+  Kind,
 } from "graphql";
-import { imp, code } from "ts-poet";
 import { invariant } from "outvariant";
+import { code, imp } from "ts-poet";
 
 import { printInputType } from "../printers";
-import { inputType, outputType, toPrimitive, toLower } from "../utils";
+import { inputType, outputType, toLower, toPrimitive } from "../utils";
 
 const printConditionalNamedType = (types: string[]) => {
   const [first, ...rest] = types;
@@ -47,20 +47,17 @@ const printConditionalSelectorArg = (types: string[]) => {
 
 const printArgument = (arg: GraphQLArgument): string => {
   const type = inputType(arg.type);
-  const typename =
-    type instanceof GraphQLScalarType
-      ? toPrimitive(type)
-      : type instanceof GraphQLEnumType
-      ? type.toString()
-      : "I" + type.toString();
+  const typename = type instanceof GraphQLScalarType
+    ? toPrimitive(type)
+    : type instanceof GraphQLEnumType
+    ? type.toString()
+    : "I" + type.toString();
 
   return `Argument<"${arg.name}", V['${arg.name}']>`;
 };
 
 const printVariable = (arg: GraphQLArgument): string => {
-  return `${arg.name}${
-    arg.type instanceof GraphQLNonNull ? "" : "?"
-  }: Variable<string> | ${printInputType(arg.type)}`;
+  return `${arg.name}${arg.type instanceof GraphQLNonNull ? "" : "?"}: Variable<string> | ${printInputType(arg.type)}`;
 };
 
 const printMethod = (field: GraphQLField<any, any, any>): string => {
@@ -73,21 +70,20 @@ const printMethod = (field: GraphQLField<any, any, any>): string => {
     field.deprecationReason && `@deprecated ${field.deprecationReason}`,
   ].filter(Boolean);
 
-  const jsDocComment =
-    comments.length > 0
-      ? `
+  const jsDocComment = comments.length > 0
+    ? `
   /**
    ${comments.map((comment) => "* " + comment).join("\n")}
     */
   `
-      : "";
+    : "";
 
   if (type instanceof GraphQLScalarType || type instanceof GraphQLEnumType) {
     // @todo render arguments correctly
     return args.length > 0
       ? jsDocComment.concat(
-          `${name}: (variables) => field("${name}", Object.entries(variables).map(([k, v]) => argument(k, v)) as any),`
-        )
+        `${name}: (variables) => field("${name}", Object.entries(variables).map(([k, v]) => argument(k, v)) as any),`,
+      )
       : jsDocComment.concat(`${name}: () => field("${name}"),`);
   } else {
     const renderArgument = (arg: GraphQLArgument): string => {
@@ -122,37 +118,44 @@ const printSignature = (field: GraphQLField<any, any, any>): string => {
     field.deprecationReason && `@deprecated ${field.deprecationReason}`,
   ].filter(Boolean) as string[];
 
-  const jsDocComment =
-    comments.length > 0
-      ? `
+  const jsDocComment = comments.length > 0
+    ? `
     /**
      ${comments.map((comment) => "* " + comment).join("\n")}
      */
     `
-      : "";
+    : "";
 
   // @todo define Args type parameter as mapped type OR non-constant (i.e Array<Argument<...> | Argument<...>>)
   if (type instanceof GraphQLScalarType || type instanceof GraphQLEnumType) {
     return args.length > 0
-      ? `${jsDocComment}\n readonly ${name}: <V extends { ${args
+      ? `${jsDocComment}\n readonly ${name}: <V extends { ${
+        args
           .map(printVariable)
-          .join(", ")} }>(variables: V) => Field<"${name}", [ ${args
+          .join(", ")
+      } }>(variables: V) => Field<"${name}", [ ${
+        args
           .map(printArgument)
-          .join(", ")} ]>`
+          .join(", ")
+      } ]>`
       : `${jsDocComment}\n readonly ${name}: () => Field<"${name}">`;
   } else {
     // @todo restrict allowed Field types
     return args.length > 0
       ? `
       ${jsDocComment}
-      readonly ${name}: <V extends { ${args
+      readonly ${name}: <V extends { ${
+        args
           .map(printVariable)
-          .join(", ")} }, T extends ReadonlyArray<Selection>>(
+          .join(", ")
+      } }, T extends ReadonlyArray<Selection>>(
         variables: V,
         select: (t: I${type.toString()}Selector) => T
-      ) => Field<"${name}", [ ${args
+      ) => Field<"${name}", [ ${
+        args
           .map(printArgument)
-          .join(", ")} ], SelectionSet<T>>,
+          .join(", ")
+      } ], SelectionSet<T>>,
     `
       : `
       ${jsDocComment}
@@ -165,7 +168,7 @@ const printSignature = (field: GraphQLField<any, any, any>): string => {
 
 export const transform = (
   ast: DocumentNode,
-  schema: GraphQLSchema
+  schema: GraphQLSchema,
 ): ASTVisitor => {
   // const Field = imp("Field@timkendall@tql");
   // const Argument = imp("Argument@timkendall@tql");
@@ -195,12 +198,12 @@ export const transform = (
 
       invariant(
         type instanceof GraphQLObjectType,
-        `Type "${typename}" was not instance of expected class GraphQLObjectType.`
+        `Type "${typename}" was not instance of expected class GraphQLObjectType.`,
       );
 
       const fields = Object.values(type.getFields());
 
-      return code`
+      return code `
         ${/* selector interface */ ""}
         interface I${type.name}Selector {
           readonly __typename: () => Field<"__typename">
@@ -214,9 +217,11 @@ export const transform = (
         }
 
         ${/* select fn */ ""}
-        export const ${toLower(
-          typename
-        )} = <T extends ReadonlyArray<Selection>>(select: (t: I${typename}Selector) => T) => new SelectionBuilder<ISchema, "${type}", T>(SCHEMA as any, "${typename}", select(${typename}Selector))
+        export const ${
+        toLower(
+          typename,
+        )
+      } = <T extends ReadonlyArray<Selection>>(select: (t: I${typename}Selector) => T) => new SelectionBuilder<ISchema, "${type}", T>(SCHEMA as any, "${typename}", select(${typename}Selector))
       `;
     },
 
@@ -226,7 +231,7 @@ export const transform = (
 
       invariant(
         type instanceof GraphQLInterfaceType,
-        `Type "${typename}" was not instance of expected class GraphQLInterfaceType.`
+        `Type "${typename}" was not instance of expected class GraphQLInterfaceType.`,
       );
 
       // @note Get all implementors of this union
@@ -236,20 +241,24 @@ export const transform = (
 
       const fields = Object.values(type.getFields());
 
-      return code`
+      return code `
         ${/* selector interface */ ""}
         interface I${type.name}Selector {
           readonly __typename: () => Field<"__typename">
           
           ${fields.map(printSignature).join("\n")}
 
-          readonly on: <T extends ReadonlyArray<Selection>, F extends ${implementations
-            .map((name) => `"${name}"`)
-            .join(" | ")}>(
+          readonly on: <T extends ReadonlyArray<Selection>, F extends ${
+        implementations
+          .map((name) => `"${name}"`)
+          .join(" | ")
+      }>(
             type: F,
-            select: (t: ${printConditionalSelectorArg(
-              implementations.map((name) => name)
-            )}) => T
+            select: (t: ${
+        printConditionalSelectorArg(
+          implementations.map((name) => name),
+        )
+      }) => T
           ) => InlineFragment<NamedType<F>, SelectionSet<T>>
         }
 
@@ -264,18 +273,20 @@ export const transform = (
             select,
           ) => {
             switch(type) {
-              ${implementations
-                .map(
-                  (name) => `
+              ${
+        implementations
+          .map(
+            (name) => `
                 case "${name}": {
                   return inlineFragment(
                     namedType("${name}"),
                     selectionSet(select(${name}Selector as Parameters<typeof select>[0])),
                   )
                 }
-              `
-                )
-                .join("\n")}
+              `,
+          )
+          .join("\n")
+      }
               default:
                 throw new TypeConditionError({ 
                   selectedType: type, 
@@ -286,9 +297,11 @@ export const transform = (
         }
 
         ${/* select fn */ ""}
-        export const ${toLower(
-          typename
-        )} = <T extends ReadonlyArray<Selection>>(select: (t: I${typename}Selector) => T) => new SelectionBuilder<ISchema, "${type}", T>(SCHEMA as any, "${typename}", select(${typename}Selector))
+        export const ${
+        toLower(
+          typename,
+        )
+      } = <T extends ReadonlyArray<Selection>>(select: (t: I${typename}Selector) => T) => new SelectionBuilder<ISchema, "${type}", T>(SCHEMA as any, "${typename}", select(${typename}Selector))
       `;
     },
 
@@ -298,7 +311,7 @@ export const transform = (
 
       invariant(
         type instanceof GraphQLUnionType,
-        `Type "${typename}" was not instance of expected class GraphQLUnionType.`
+        `Type "${typename}" was not instance of expected class GraphQLUnionType.`,
       );
 
       // @note Get all implementors of this union
@@ -306,18 +319,22 @@ export const transform = (
         .getPossibleTypes(type)
         .map((type) => type.name);
 
-      return code`
+      return code `
         ${/* selector interface */ ""}
         interface I${type.name}Selector {
           readonly __typename: () => Field<"__typename">
 
-          readonly on: <T extends ReadonlyArray<Selection>, F extends ${implementations
-            .map((name) => `"${name}"`)
-            .join(" | ")}>(
+          readonly on: <T extends ReadonlyArray<Selection>, F extends ${
+        implementations
+          .map((name) => `"${name}"`)
+          .join(" | ")
+      }>(
             type: F,
-            select: (t: ${printConditionalSelectorArg(
-              implementations.map((name) => name)
-            )}) => T
+            select: (t: ${
+        printConditionalSelectorArg(
+          implementations.map((name) => name),
+        )
+      }) => T
           ) => InlineFragment<NamedType<F>, SelectionSet<T>>
         }
 
@@ -330,18 +347,20 @@ export const transform = (
             select,
           ) => {
             switch(type) {
-              ${implementations
-                .map(
-                  (name) => `
+              ${
+        implementations
+          .map(
+            (name) => `
                 case "${name}": {
                   return inlineFragment(
                     namedType("${name}"),
                     selectionSet(select(${name}Selector as Parameters<typeof select>[0])),
                   )
                 }
-              `
-                )
-                .join("\n")}
+              `,
+          )
+          .join("\n")
+      }
               default:
                 throw new TypeConditionError({ 
                   selectedType: type, 
@@ -352,9 +371,11 @@ export const transform = (
         }
 
         ${/* select fn */ ""}
-        export const ${toLower(
-          typename
-        )} = <T extends ReadonlyArray<Selection>>(select: (t: I${typename}Selector) => T) => new SelectionBuilder<ISchema, "${type}", T>(SCHEMA as any, "${typename}", select(${typename}Selector))
+        export const ${
+        toLower(
+          typename,
+        )
+      } = <T extends ReadonlyArray<Selection>>(select: (t: I${typename}Selector) => T) => new SelectionBuilder<ISchema, "${type}", T>(SCHEMA as any, "${typename}", select(${typename}Selector))
       `;
     },
 

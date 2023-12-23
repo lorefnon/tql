@@ -1,15 +1,6 @@
 import { expectAssignable } from "tsd";
 
-import {
-  selectionSet,
-  field,
-  argument,
-  variable,
-  inlineFragment,
-  namedType,
-  Variables,
-  Result,
-} from "../src";
+import { argument, field, inlineFragment, namedType, Result, selectionSet, variable, Variables } from "../src";
 
 interface Schema {
   String: string;
@@ -45,16 +36,20 @@ const selection = selectionSet([
   field(
     "viewer",
     undefined,
-    selectionSet([
-      field("id"),
+    selectionSet(
+      [
+        field("id"),
 
-      inlineFragment(
-        namedType<"User">("User"),
-        selectionSet([
-          field("height", [argument("unit", variable("heightUnit"))]),
-        ] as const)
-      ),
-    ] as const)
+        inlineFragment(
+          namedType<"User">("User"),
+          selectionSet(
+            [
+              field("height", [argument("unit", variable("heightUnit"))]),
+            ] as const,
+          ),
+        ),
+      ] as const,
+    ),
   ),
 ]);
 

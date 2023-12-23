@@ -1,14 +1,6 @@
 import { buildSchema, OperationTypeNode } from "graphql";
 
-import {
-  namedType,
-  nonNull,
-  field,
-  argument,
-  variable,
-  selectionSet,
-  variableDefinition,
-} from "../AST";
+import { argument, field, namedType, nonNull, selectionSet, variable, variableDefinition } from "../AST";
 import { Selection } from "../Selection";
 import { buildVariableDefinitions } from "../Variables";
 
@@ -20,7 +12,7 @@ describe("Variables", () => {
         hello(name: String!): String!
       }
     `,
-      { noLocation: true }
+      { noLocation: true },
     );
 
     const selection = new Selection(schema, "Query", [
@@ -31,7 +23,7 @@ describe("Variables", () => {
     const variableDefinitions = buildVariableDefinitions(
       schema,
       OperationTypeNode.QUERY,
-      selectionSet(selection)
+      selectionSet(selection),
     );
 
     expect(variableDefinitions).toEqual([
@@ -51,7 +43,7 @@ describe("Variables", () => {
         friends(limit: Int!): [User!]
       }
     `,
-      { noLocation: true }
+      { noLocation: true },
     );
 
     const selection = new Selection(schema, "Query", [
@@ -62,16 +54,16 @@ describe("Variables", () => {
           field(
             "friends",
             [argument("limit", variable("friendsLimit"))],
-            selectionSet([field("id")])
+            selectionSet([field("id")]),
           ),
-        ])
+        ]),
       ),
     ]);
 
     const variableDefinitions = buildVariableDefinitions(
       schema,
       OperationTypeNode.QUERY,
-      selectionSet(selection)
+      selectionSet(selection),
     );
 
     expect(variableDefinitions).toEqual([

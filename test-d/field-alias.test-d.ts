@@ -1,6 +1,6 @@
-import { expectAssignable } from "tsd";
 import freeze from "deep-freeze";
-import { selectionSet, Result, field } from "../src";
+import { expectAssignable } from "tsd";
+import { field, Result, selectionSet } from "../src";
 
 interface Schema {
   String: string;
@@ -26,24 +26,27 @@ interface User {
 }
 
 const selection = selectionSet([
-  field("userById", undefined, selectionSet([
-    field("firstName").as("name")
-  ]))
-])
+  field(
+    "userById",
+    undefined,
+    selectionSet([
+      field("firstName").as("name"),
+    ]),
+  ),
+]);
 
 type Test = Result<Schema, Query, typeof selection>;
 
 expectAssignable<Test>(
   freeze({
     userById: {
-      name: "test"
-    }
-  })
-)
+      name: "test",
+    },
+  }),
+);
 
 expectAssignable<Test>(
   freeze({
-    userById: null
-  })
-)
-
+    userById: null,
+  }),
+);

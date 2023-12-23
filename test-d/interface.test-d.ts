@@ -1,6 +1,6 @@
 import { expectAssignable } from "tsd";
 
-import { selectionSet, field, namedType, inlineFragment, Result } from "../src";
+import { field, inlineFragment, namedType, Result, selectionSet } from "../src";
 
 interface Schema {
   String: string;
@@ -36,30 +36,36 @@ interface Admin extends Node {
   badgeNumber: number;
 }
 
-const selection = selectionSet([
-  field(
-    "node",
-    undefined,
-    selectionSet([
-      field("__typename"),
-      field("id"),
-
-      inlineFragment(
-        namedType<"Employee">("Employee"),
-        selectionSet([field("firstName")] as const)
-      ),
-
-      inlineFragment(
-        namedType<"Admin">("Admin"),
-        selectionSet([
+const selection = selectionSet(
+  [
+    field(
+      "node",
+      undefined,
+      selectionSet(
+        [
+          field("__typename"),
           field("id"),
-          field("badass"),
-          field("badgeNumber"),
-        ] as const)
+
+          inlineFragment(
+            namedType<"Employee">("Employee"),
+            selectionSet([field("firstName")] as const),
+          ),
+
+          inlineFragment(
+            namedType<"Admin">("Admin"),
+            selectionSet(
+              [
+                field("id"),
+                field("badass"),
+                field("badgeNumber"),
+              ] as const,
+            ),
+          ),
+        ] as const,
       ),
-    ] as const)
-  ),
-] as const);
+    ),
+  ] as const,
+);
 
 type Test = Result<Schema, Query, typeof selection>;
 

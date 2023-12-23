@@ -1,7 +1,7 @@
-import { expectType } from "tsd";
 import freeze from "deep-freeze";
+import { expectType } from "tsd";
 
-import { selectionSet, field, Result } from "../src";
+import { field, Result, selectionSet } from "../src";
 
 interface Schema {
   Query: Query;

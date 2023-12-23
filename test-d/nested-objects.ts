@@ -1,7 +1,7 @@
-import { expectAssignable } from "tsd";
 import freeze from "deep-freeze";
+import { expectAssignable } from "tsd";
 
-import { selectionSet, field, Result } from "../src";
+import { field, Result, selectionSet } from "../src";
 
 interface Schema {
   String: string;
@@ -41,7 +41,7 @@ const selection = selectionSet([
       field("firstName"),
       field("age"),
       field("friends", undefined, selectionSet([field("id")])),
-    ])
+    ]),
   ),
 ]);
 
@@ -60,7 +60,7 @@ expectAssignable<Test>(
         friends: [{ id: "bar" }],
       },
     ],
-  })
+  }),
 );
 
 expectAssignable<Test>(
@@ -69,5 +69,5 @@ expectAssignable<Test>(
       id: "foo",
     },
     friendsByUserId: null,
-  })
+  }),
 );

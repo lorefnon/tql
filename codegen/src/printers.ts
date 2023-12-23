@@ -1,9 +1,4 @@
-import {
-  GraphQLInputType,
-  GraphQLScalarType,
-  GraphQLEnumType,
-  GraphQLInputObjectType,
-} from "graphql";
+import { GraphQLEnumType, GraphQLInputObjectType, GraphQLInputType, GraphQLScalarType } from "graphql";
 
 import { inputType, listType, toPrimitive } from "./utils";
 

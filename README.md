@@ -18,28 +18,28 @@ Try out our pre-compiled Star Wars GraphQL SDK on [CodeSandbox](https://codesand
 
 1. `npm install @lorefnon/tql@beta`
 
-   * **TypeScript 4.1+** is required for [Recursive Conditional Type](https://devblogs.microsoft.com/typescript/announcing-typescript-4-1/#recursive-conditional-types) support
+   - **TypeScript 4.1+** is required for [Recursive Conditional Type](https://devblogs.microsoft.com/typescript/announcing-typescript-4-1/#recursive-conditional-types) support
 
 2. Generate an SDK with `npx @lorefnon/tql-gen <schema> -o sdk.ts`
 
-  `<schema>` can be a path to local file or an http endpoint url.
+`<schema>` can be a path to local file or an http endpoint url.
 
 ## Usage
 
 Import selector functions to start defining queries 🎉
 
 ```typescript
-import { useQuery } from '@apollo/client'
+import { useQuery } from "@apollo/client";
 
 // SDK generated in previous setup
-import { character, query, $ } from './starwars'
+import { $, character, query } from "./starwars";
 
 // define reusable selections
 const CHARACTER = character(t => [
   t.id(),
   t.name(),
   t.appearsIn(),
-])
+]);
 
 const QUERY = query((t) => [
   t.reviews({ episode: Episode.EMPIRE }, (t) => [
@@ -47,7 +47,7 @@ const QUERY = query((t) => [
     t.commentary(),
   ]),
 
-  t.human({ id: $('id') }, (t) => [
+  t.human({ id: $("id") }, (t) => [
     t.__typename(),
     t.id(),
     t.name(),
@@ -57,24 +57,25 @@ const QUERY = query((t) => [
     // deprecated field should be properly picked-up by your editor
     t.mass(),
 
-    t.friends((t) => <const>[
-      t.__typename(),
-      
-      ...CHARACTER,
-      // or
-      CHARACTER.toInlineFragment(),
+    t.friends((t) =>
+      [
+        t.__typename(),
 
-      t.on("Human", (t) => [t.homePlanet()]),
-      t.on("Droid", (t) => [t.primaryFunction()]),
-    ]),
+        ...CHARACTER,
+        // or
+        CHARACTER.toInlineFragment(),
+
+        t.on("Human", (t) => [t.homePlanet()]),
+        t.on("Droid", (t) => [t.primaryFunction()]),
+      ] as const
+    ),
 
     t.starships((t) => [t.id(), t.name()]),
   ]),
-]).build({ name: 'Example' })
+]).build({ name: "Example" });
 
 // type-safe result and variables 👍
-const { data } = useQuery(QUERY, { variables: { id: '1011' }})
-
+const { data } = useQuery(QUERY, { variables: { id: "1011" } });
 ```
 
 ## Inspiration

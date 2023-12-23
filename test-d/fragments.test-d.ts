@@ -1,15 +1,15 @@
-import { expectAssignable } from "tsd";
 import { L } from "ts-toolbelt";
+import { expectAssignable } from "tsd";
 
 import {
+  Field,
+  field,
+  InlineFragment,
+  inlineFragment,
+  MergeSelectionSets,
+  namedType,
   SelectionSet,
   selectionSet,
-  field,
-  Field,
-  namedType,
-  inlineFragment,
-  InlineFragment,
-  MergeSelectionSets,
   SpreadFragment,
   SpreadFragments,
 } from "../src";
@@ -50,12 +50,12 @@ interface Admin extends Node {
 
 const fragment1 = inlineFragment(
   namedType<"Employee">("Employee"),
-  selectionSet([field("firstName")])
+  selectionSet([field("firstName")]),
 );
 
 const fragment2 = inlineFragment(
   namedType<"Admin">("Admin"),
-  selectionSet([field("badass"), field("badgeNumber")])
+  selectionSet([field("badass"), field("badgeNumber")]),
 );
 
 // need to assert const because not function return?

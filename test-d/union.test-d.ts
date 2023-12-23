@@ -1,6 +1,6 @@
 import { expectAssignable } from "tsd";
 
-import { selectionSet, field, namedType, inlineFragment, Result } from "../src";
+import { field, inlineFragment, namedType, Result, selectionSet } from "../src";
 
 interface Schema {
   String: string;
@@ -32,25 +32,29 @@ interface Book {
 
 type SearchResult = Author | Book;
 
-const selection = selectionSet([
-  field(
-    "search",
-    undefined,
-    selectionSet([
-      field("__typename"),
+const selection = selectionSet(
+  [
+    field(
+      "search",
+      undefined,
+      selectionSet(
+        [
+          field("__typename"),
 
-      inlineFragment(
-        namedType<"Author">("Author"),
-        selectionSet([field("name")] as const)
-      ),
+          inlineFragment(
+            namedType<"Author">("Author"),
+            selectionSet([field("name")] as const),
+          ),
 
-      inlineFragment(
-        namedType<"Book">("Book"),
-        selectionSet([field("title")] as const)
+          inlineFragment(
+            namedType<"Book">("Book"),
+            selectionSet([field("title")] as const),
+          ),
+        ] as const,
       ),
-    ] as const)
-  ),
-] as const);
+    ),
+  ] as const,
+);
 
 type Test = Result<Schema, Query, typeof selection>;
 

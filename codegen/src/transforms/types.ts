@@ -1,31 +1,29 @@
 import {
-  GraphQLSchema,
   ASTVisitor,
-  Kind,
+  DocumentNode,
   GraphQLArgument,
-  isNonNullType,
+  GraphQLEnumType,
   GraphQLField,
-  GraphQLObjectType,
+  GraphQLInputField,
   GraphQLInputObjectType,
   GraphQLInputType,
-  GraphQLNonNull,
-  GraphQLScalarType,
-  GraphQLEnumType,
-  GraphQLUnionType,
   GraphQLInterfaceType,
-  DocumentNode,
-  GraphQLInputField,
+  GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLScalarType,
+  GraphQLSchema,
+  GraphQLUnionType,
+  isNonNullType,
+  Kind,
 } from "graphql";
-import { code } from "ts-poet";
 import { invariant } from "outvariant";
+import { code } from "ts-poet";
 
 import { printInputType } from "../printers";
-import { inputType, outputType, listType, toPrimitive } from "../utils";
+import { inputType, listType, outputType, toPrimitive } from "../utils";
 
 const printVariable = (arg: GraphQLArgument): string => {
-  return `${arg.name}: ${printInputType(arg.type)} ${
-    arg.type instanceof GraphQLNonNull ? "" : "| undefined"
-  }`;
+  return `${arg.name}: ${printInputType(arg.type)} ${arg.type instanceof GraphQLNonNull ? "" : "| undefined"}`;
 };
 
 const printField = (field: GraphQLField<any, any, any>): string => {
@@ -54,9 +52,9 @@ const printField = (field: GraphQLField<any, any, any>): string => {
       }` + (isNonNull ? "" : " | null")
     );
   } else if (
-    type instanceof GraphQLInterfaceType ||
-    type instanceof GraphQLUnionType ||
-    type instanceof GraphQLObjectType
+    type instanceof GraphQLInterfaceType
+    || type instanceof GraphQLUnionType
+    || type instanceof GraphQLObjectType
   ) {
     return (
       `${args.length > 0 ? "" : "readonly"} ${field.name}${printVariables()}: ${
@@ -70,7 +68,7 @@ const printField = (field: GraphQLField<any, any, any>): string => {
 
 export const transform = (
   ast: DocumentNode,
-  schema: GraphQLSchema
+  schema: GraphQLSchema,
 ): ASTVisitor => {
   // @note needed to serialize inline enum values correctly at runtime
   const enumValues = new Set<string>();
@@ -88,7 +86,7 @@ export const transform = (
         return `${member} = "${member}"`;
       };
 
-      return code`
+      return code `
         export enum ${typename} {
           ${values.map(printMember).join(",\n")}
         }
@@ -106,7 +104,7 @@ export const transform = (
 
       invariant(
         type instanceof GraphQLInputObjectType,
-        `Type "${typename}" was not instance of expected class GraphQLInputObjectType.`
+        `Type "${typename}" was not instance of expected class GraphQLInputObjectType.`,
       );
 
       const fields = Object.values(type.getFields());
@@ -137,7 +135,7 @@ export const transform = (
         ].join("");
       };
 
-      return code`
+      return code `
         export interface I${typename} {
           ${fields.map(printField).join("\n")}
         }
@@ -150,28 +148,25 @@ export const transform = (
 
       invariant(
         type instanceof GraphQLObjectType,
-        `Type "${typename}" was not instance of expected class GraphQLObjectType.`
+        `Type "${typename}" was not instance of expected class GraphQLObjectType.`,
       );
 
       const fields = Object.values(type.getFields());
       const interfaces = type.getInterfaces();
 
       // @note TypeScript only requires new fields to be defined on interface extendors
-      const interfaceFields = interfaces.flatMap((i) =>
-        Object.values(i.getFields()).map((field) => field.name)
-      );
+      const interfaceFields = interfaces.flatMap((i) => Object.values(i.getFields()).map((field) => field.name));
       const uncommonFields = fields.filter(
-        (field) => !interfaceFields.includes(field.name)
+        (field) => !interfaceFields.includes(field.name),
       );
 
       // @todo extend any implemented interfaces
       // @todo only render fields unique to this type
-      const extensions =
-        interfaces.length > 0
-          ? `extends ${interfaces.map((i) => "I" + i.name).join(", ")}`
-          : "";
+      const extensions = interfaces.length > 0
+        ? `extends ${interfaces.map((i) => "I" + i.name).join(", ")}`
+        : "";
 
-      return code`
+      return code `
         export interface I${typename} ${extensions} {
           readonly __typename: ${`"${typename}"`}
           ${uncommonFields.map(printField).join("\n")}
@@ -185,7 +180,7 @@ export const transform = (
 
       invariant(
         type instanceof GraphQLInterfaceType,
-        `Type "${typename}" was not instance of expected class GraphQLInterfaceType.`
+        `Type "${typename}" was not instance of expected class GraphQLInterfaceType.`,
       );
 
       // @note Get all implementors of this union
@@ -195,11 +190,13 @@ export const transform = (
 
       const fields = Object.values(type.getFields());
 
-      return code`
+      return code `
         export interface I${typename} {
-          readonly __typename: ${implementations
-            .map((type) => `"${type}"`)
-            .join(" | ")}
+          readonly __typename: ${
+        implementations
+          .map((type) => `"${type}"`)
+          .join(" | ")
+      }
           ${fields.map(printField).join("\n")}
         }
       `;
@@ -211,7 +208,7 @@ export const transform = (
 
       invariant(
         type instanceof GraphQLUnionType,
-        `Type "${typename}" was not instance of expected class GraphQLUnionType.`
+        `Type "${typename}" was not instance of expected class GraphQLUnionType.`,
       );
 
       // @note Get all implementors of this union
@@ -219,10 +216,12 @@ export const transform = (
         .getPossibleTypes(type)
         .map((type) => type.name);
 
-      return code`
-        export type ${"I" + type.name} = ${implementations
-        .map((type) => `I${type}`)
-        .join(" | ")}
+      return code `
+        export type ${"I" + type.name} = ${
+        implementations
+          .map((type) => `I${type}`)
+          .join(" | ")
+      }
       `;
     },
 

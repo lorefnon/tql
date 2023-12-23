@@ -1,20 +1,20 @@
 import { buildASTSchema, Kind, OperationTypeNode } from "graphql";
 
 import {
-  TypeConditionError,
-  NamedType,
-  Field,
-  InlineFragment,
   Argument,
-  Variable,
-  Selection,
-  SelectionSet,
-  SelectionBuilder,
-  namedType,
-  field,
-  inlineFragment,
   argument,
+  Field,
+  field,
+  InlineFragment,
+  inlineFragment,
+  NamedType,
+  namedType,
+  Selection,
+  SelectionBuilder,
+  SelectionSet,
   selectionSet,
+  TypeConditionError,
+  Variable,
 } from "../src";
 
 export type { Result, Variables } from "../src";
@@ -55,8 +55,7 @@ export const SCHEMA = buildASTSchema({
       kind: Kind.OBJECT_TYPE_DEFINITION,
       description: {
         kind: Kind.STRING,
-        value:
-          "The query type, represents all of the entry points into our object graph",
+        value: "The query type, represents all of the entry points into our object graph",
         block: true,
       },
       name: {
@@ -317,8 +316,7 @@ export const SCHEMA = buildASTSchema({
       kind: Kind.OBJECT_TYPE_DEFINITION,
       description: {
         kind: Kind.STRING,
-        value:
-          "The mutation type, represents all updates we can make to our data",
+        value: "The mutation type, represents all updates we can make to our data",
         block: true,
       },
       name: {
@@ -410,8 +408,7 @@ export const SCHEMA = buildASTSchema({
           kind: Kind.ENUM_VALUE_DEFINITION,
           description: {
             kind: Kind.STRING,
-            value:
-              "Star Wars Episode V: The Empire Strikes Back, released in 1980.",
+            value: "Star Wars Episode V: The Empire Strikes Back, released in 1980.",
             block: true,
           },
           name: {
@@ -424,8 +421,7 @@ export const SCHEMA = buildASTSchema({
           kind: Kind.ENUM_VALUE_DEFINITION,
           description: {
             kind: Kind.STRING,
-            value:
-              "Star Wars Episode VI: Return of the Jedi, released in 1983.",
+            value: "Star Wars Episode VI: Return of the Jedi, released in 1983.",
             block: true,
           },
           name: {
@@ -502,8 +498,7 @@ export const SCHEMA = buildASTSchema({
           kind: Kind.FIELD_DEFINITION,
           description: {
             kind: Kind.STRING,
-            value:
-              "The friends of the character, or an empty list if they have none",
+            value: "The friends of the character, or an empty list if they have none",
             block: true,
           },
           name: {
@@ -527,8 +522,7 @@ export const SCHEMA = buildASTSchema({
           kind: Kind.FIELD_DEFINITION,
           description: {
             kind: Kind.STRING,
-            value:
-              "The friends of the character exposed as a connection with edges",
+            value: "The friends of the character exposed as a connection with edges",
             block: true,
           },
           name: {
@@ -887,8 +881,7 @@ export const SCHEMA = buildASTSchema({
           kind: Kind.FIELD_DEFINITION,
           description: {
             kind: Kind.STRING,
-            value:
-              "The friends of the human exposed as a connection with edges",
+            value: "The friends of the human exposed as a connection with edges",
             block: true,
           },
           name: {
@@ -970,8 +963,7 @@ export const SCHEMA = buildASTSchema({
           kind: Kind.FIELD_DEFINITION,
           description: {
             kind: Kind.STRING,
-            value:
-              "A list of starships this person has piloted, or an empty list if none",
+            value: "A list of starships this person has piloted, or an empty list if none",
             block: true,
           },
           name: {
@@ -1091,8 +1083,7 @@ export const SCHEMA = buildASTSchema({
           kind: Kind.FIELD_DEFINITION,
           description: {
             kind: Kind.STRING,
-            value:
-              "The friends of the droid exposed as a connection with edges",
+            value: "The friends of the droid exposed as a connection with edges",
             block: true,
           },
           name: {
@@ -1256,8 +1247,7 @@ export const SCHEMA = buildASTSchema({
           kind: Kind.FIELD_DEFINITION,
           description: {
             kind: Kind.STRING,
-            value:
-              "A list of the friends, as a convenience when edges are not needed.",
+            value: "A list of the friends, as a convenience when edges are not needed.",
             block: true,
           },
           name: {
@@ -1801,35 +1791,37 @@ export const SCHEMA = buildASTSchema({
   ],
 });
 
-export const ENUMS = Object.freeze({
-  NEWHOPE: true,
-  EMPIRE: true,
-  JEDI: true,
-  METER: true,
-  FOOT: true,
-  CUBIT: true,
-  SCALAR: true,
-  OBJECT: true,
-  INTERFACE: true,
-  UNION: true,
-  ENUM: true,
-  INPUT_OBJECT: true,
-  LIST: true,
-  NON_NULL: true,
-  QUERY: true,
-  MUTATION: true,
-  SUBSCRIPTION: true,
-  FIELD: true,
-  FRAGMENT_DEFINITION: true,
-  FRAGMENT_SPREAD: true,
-  INLINE_FRAGMENT: true,
-  VARIABLE_DEFINITION: true,
-  SCHEMA: true,
-  FIELD_DEFINITION: true,
-  ARGUMENT_DEFINITION: true,
-  ENUM_VALUE: true,
-  INPUT_FIELD_DEFINITION: true,
-} as const);
+export const ENUMS = Object.freeze(
+  {
+    NEWHOPE: true,
+    EMPIRE: true,
+    JEDI: true,
+    METER: true,
+    FOOT: true,
+    CUBIT: true,
+    SCALAR: true,
+    OBJECT: true,
+    INTERFACE: true,
+    UNION: true,
+    ENUM: true,
+    INPUT_OBJECT: true,
+    LIST: true,
+    NON_NULL: true,
+    QUERY: true,
+    MUTATION: true,
+    SUBSCRIPTION: true,
+    FIELD: true,
+    FRAGMENT_DEFINITION: true,
+    FRAGMENT_SPREAD: true,
+    INLINE_FRAGMENT: true,
+    VARIABLE_DEFINITION: true,
+    SCHEMA: true,
+    FIELD_DEFINITION: true,
+    ARGUMENT_DEFINITION: true,
+    ENUM_VALUE: true,
+    INPUT_FIELD_DEFINITION: true,
+  } as const,
+);
 
 export interface ISchema {
   Query: IQuery;
@@ -1966,58 +1958,58 @@ interface IQuerySelector {
 
   readonly hero: <
     V extends { episode?: Variable<string> | Episode },
-    T extends ReadonlyArray<Selection>
+    T extends ReadonlyArray<Selection>,
   >(
     variables: V,
-    select: (t: ICharacterSelector) => T
+    select: (t: ICharacterSelector) => T,
   ) => Field<"hero", [Argument<"episode", V["episode"]>], SelectionSet<T>>;
 
   readonly reviews: <
     V extends { episode: Variable<string> | Episode },
-    T extends ReadonlyArray<Selection>
+    T extends ReadonlyArray<Selection>,
   >(
     variables: V,
-    select: (t: IReviewSelector) => T
+    select: (t: IReviewSelector) => T,
   ) => Field<"reviews", [Argument<"episode", V["episode"]>], SelectionSet<T>>;
 
   readonly search: <
     V extends { text?: Variable<string> | string },
-    T extends ReadonlyArray<Selection>
+    T extends ReadonlyArray<Selection>,
   >(
     variables: V,
-    select: (t: ISearchResultSelector) => T
+    select: (t: ISearchResultSelector) => T,
   ) => Field<"search", [Argument<"text", V["text"]>], SelectionSet<T>>;
 
   readonly character: <
     V extends { id: Variable<string> | string },
-    T extends ReadonlyArray<Selection>
+    T extends ReadonlyArray<Selection>,
   >(
     variables: V,
-    select: (t: ICharacterSelector) => T
+    select: (t: ICharacterSelector) => T,
   ) => Field<"character", [Argument<"id", V["id"]>], SelectionSet<T>>;
 
   readonly droid: <
     V extends { id: Variable<string> | string },
-    T extends ReadonlyArray<Selection>
+    T extends ReadonlyArray<Selection>,
   >(
     variables: V,
-    select: (t: IDroidSelector) => T
+    select: (t: IDroidSelector) => T,
   ) => Field<"droid", [Argument<"id", V["id"]>], SelectionSet<T>>;
 
   readonly human: <
     V extends { id: Variable<string> | string },
-    T extends ReadonlyArray<Selection>
+    T extends ReadonlyArray<Selection>,
   >(
     variables: V,
-    select: (t: IHumanSelector) => T
+    select: (t: IHumanSelector) => T,
   ) => Field<"human", [Argument<"id", V["id"]>], SelectionSet<T>>;
 
   readonly starship: <
     V extends { id: Variable<string> | string },
-    T extends ReadonlyArray<Selection>
+    T extends ReadonlyArray<Selection>,
   >(
     variables: V,
-    select: (t: IStarshipSelector) => T
+    select: (t: IStarshipSelector) => T,
   ) => Field<"starship", [Argument<"id", V["id"]>], SelectionSet<T>>;
 }
 
@@ -2028,59 +2020,59 @@ const QuerySelector: IQuerySelector = {
     field(
       "hero",
       Object.entries(variables).map(([k, v]) => argument(k, v)) as any,
-      selectionSet(select(CharacterSelector))
+      selectionSet(select(CharacterSelector)),
     ),
 
   reviews: (variables, select) =>
     field(
       "reviews",
       Object.entries(variables).map(([k, v]) => argument(k, v)) as any,
-      selectionSet(select(ReviewSelector))
+      selectionSet(select(ReviewSelector)),
     ),
 
   search: (variables, select) =>
     field(
       "search",
       Object.entries(variables).map(([k, v]) => argument(k, v)) as any,
-      selectionSet(select(SearchResultSelector))
+      selectionSet(select(SearchResultSelector)),
     ),
 
   character: (variables, select) =>
     field(
       "character",
       Object.entries(variables).map(([k, v]) => argument(k, v)) as any,
-      selectionSet(select(CharacterSelector))
+      selectionSet(select(CharacterSelector)),
     ),
 
   droid: (variables, select) =>
     field(
       "droid",
       Object.entries(variables).map(([k, v]) => argument(k, v)) as any,
-      selectionSet(select(DroidSelector))
+      selectionSet(select(DroidSelector)),
     ),
 
   human: (variables, select) =>
     field(
       "human",
       Object.entries(variables).map(([k, v]) => argument(k, v)) as any,
-      selectionSet(select(HumanSelector))
+      selectionSet(select(HumanSelector)),
     ),
 
   starship: (variables, select) =>
     field(
       "starship",
       Object.entries(variables).map(([k, v]) => argument(k, v)) as any,
-      selectionSet(select(StarshipSelector))
+      selectionSet(select(StarshipSelector)),
     ),
 };
 
 export const query = <T extends ReadonlyArray<Selection>>(
-  select: (t: IQuerySelector) => T
+  select: (t: IQuerySelector) => T,
 ) =>
   new SelectionBuilder<ISchema, "Query", T>(
     SCHEMA as any,
     "Query",
-    select(QuerySelector)
+    select(QuerySelector),
   );
 
 interface IMutationSelector {
@@ -2091,10 +2083,10 @@ interface IMutationSelector {
       episode?: Variable<string> | Episode;
       review: Variable<string> | IReviewInput;
     },
-    T extends ReadonlyArray<Selection>
+    T extends ReadonlyArray<Selection>,
   >(
     variables: V,
-    select: (t: IReviewSelector) => T
+    select: (t: IReviewSelector) => T,
   ) => Field<
     "createReview",
     [Argument<"episode", V["episode"]>, Argument<"review", V["review"]>],
@@ -2109,17 +2101,17 @@ const MutationSelector: IMutationSelector = {
     field(
       "createReview",
       Object.entries(variables).map(([k, v]) => argument(k, v)) as any,
-      selectionSet(select(ReviewSelector))
+      selectionSet(select(ReviewSelector)),
     ),
 };
 
 export const mutation = <T extends ReadonlyArray<Selection>>(
-  select: (t: IMutationSelector) => T
+  select: (t: IMutationSelector) => T,
 ) =>
   new SelectionBuilder<ISchema, "Mutation", T>(
     SCHEMA as any,
     "Mutation",
-    select(MutationSelector)
+    select(MutationSelector),
   );
 
 interface ICharacterSelector {
@@ -2142,7 +2134,7 @@ interface ICharacterSelector {
    */
 
   readonly friends: <T extends ReadonlyArray<Selection>>(
-    select: (t: ICharacterSelector) => T
+    select: (t: ICharacterSelector) => T,
   ) => Field<"friends", never, SelectionSet<T>>;
 
   /**
@@ -2154,10 +2146,10 @@ interface ICharacterSelector {
       first?: Variable<string> | number;
       after?: Variable<string> | string;
     },
-    T extends ReadonlyArray<Selection>
+    T extends ReadonlyArray<Selection>,
   >(
     variables: V,
-    select: (t: IFriendsConnectionSelector) => T
+    select: (t: IFriendsConnectionSelector) => T,
   ) => Field<
     "friendsConnection",
     [Argument<"first", V["first"]>, Argument<"after", V["after"]>],
@@ -2172,16 +2164,14 @@ interface ICharacterSelector {
 
   readonly on: <
     T extends ReadonlyArray<Selection>,
-    F extends "Human" | "Droid"
+    F extends "Human" | "Droid",
   >(
     type: F,
     select: (
-      t: F extends "Human"
-        ? IHumanSelector
-        : F extends "Droid"
-        ? IDroidSelector
-        : never
-    ) => T
+      t: F extends "Human" ? IHumanSelector
+        : F extends "Droid" ? IDroidSelector
+        : never,
+    ) => T,
   ) => InlineFragment<NamedType<F>, SelectionSet<T>>;
 }
 
@@ -2206,7 +2196,7 @@ const CharacterSelector: ICharacterSelector = {
     field(
       "friends",
       undefined as never,
-      selectionSet(select(CharacterSelector))
+      selectionSet(select(CharacterSelector)),
     ),
 
   /**
@@ -2217,7 +2207,7 @@ const CharacterSelector: ICharacterSelector = {
     field(
       "friendsConnection",
       Object.entries(variables).map(([k, v]) => argument(k, v)) as any,
-      selectionSet(select(FriendsConnectionSelector))
+      selectionSet(select(FriendsConnectionSelector)),
     ),
 
   /**
@@ -2230,14 +2220,14 @@ const CharacterSelector: ICharacterSelector = {
       case "Human": {
         return inlineFragment(
           namedType("Human"),
-          selectionSet(select(HumanSelector as Parameters<typeof select>[0]))
+          selectionSet(select(HumanSelector as Parameters<typeof select>[0])),
         );
       }
 
       case "Droid": {
         return inlineFragment(
           namedType("Droid"),
-          selectionSet(select(DroidSelector as Parameters<typeof select>[0]))
+          selectionSet(select(DroidSelector as Parameters<typeof select>[0])),
         );
       }
 
@@ -2251,12 +2241,12 @@ const CharacterSelector: ICharacterSelector = {
 };
 
 export const character = <T extends ReadonlyArray<Selection>>(
-  select: (t: ICharacterSelector) => T
+  select: (t: ICharacterSelector) => T,
 ) =>
   new SelectionBuilder<ISchema, "Character", T>(
     SCHEMA as any,
     "Character",
-    select(CharacterSelector)
+    select(CharacterSelector),
   );
 
 interface IHumanSelector {
@@ -2285,7 +2275,7 @@ interface IHumanSelector {
    */
 
   readonly height: <V extends { unit?: Variable<string> | LengthUnit }>(
-    variables: V
+    variables: V,
   ) => Field<"height", [Argument<"unit", V["unit"]>]>;
 
   /**
@@ -2300,7 +2290,7 @@ interface IHumanSelector {
    */
 
   readonly friends: <T extends ReadonlyArray<Selection>>(
-    select: (t: ICharacterSelector) => T
+    select: (t: ICharacterSelector) => T,
   ) => Field<"friends", never, SelectionSet<T>>;
 
   /**
@@ -2312,10 +2302,10 @@ interface IHumanSelector {
       first?: Variable<string> | number;
       after?: Variable<string> | string;
     },
-    T extends ReadonlyArray<Selection>
+    T extends ReadonlyArray<Selection>,
   >(
     variables: V,
-    select: (t: IFriendsConnectionSelector) => T
+    select: (t: IFriendsConnectionSelector) => T,
   ) => Field<
     "friendsConnection",
     [Argument<"first", V["first"]>, Argument<"after", V["after"]>],
@@ -2333,7 +2323,7 @@ interface IHumanSelector {
    */
 
   readonly starships: <T extends ReadonlyArray<Selection>>(
-    select: (t: IStarshipSelector) => T
+    select: (t: IStarshipSelector) => T,
   ) => Field<"starships", never, SelectionSet<T>>;
 }
 
@@ -2361,7 +2351,7 @@ const HumanSelector: IHumanSelector = {
   height: (variables) =>
     field(
       "height",
-      Object.entries(variables).map(([k, v]) => argument(k, v)) as any
+      Object.entries(variables).map(([k, v]) => argument(k, v)) as any,
     ),
 
   /**
@@ -2378,7 +2368,7 @@ const HumanSelector: IHumanSelector = {
     field(
       "friends",
       undefined as never,
-      selectionSet(select(CharacterSelector))
+      selectionSet(select(CharacterSelector)),
     ),
 
   /**
@@ -2389,7 +2379,7 @@ const HumanSelector: IHumanSelector = {
     field(
       "friendsConnection",
       Object.entries(variables).map(([k, v]) => argument(k, v)) as any,
-      selectionSet(select(FriendsConnectionSelector))
+      selectionSet(select(FriendsConnectionSelector)),
     ),
 
   /**
@@ -2405,17 +2395,17 @@ const HumanSelector: IHumanSelector = {
     field(
       "starships",
       undefined as never,
-      selectionSet(select(StarshipSelector))
+      selectionSet(select(StarshipSelector)),
     ),
 };
 
 export const human = <T extends ReadonlyArray<Selection>>(
-  select: (t: IHumanSelector) => T
+  select: (t: IHumanSelector) => T,
 ) =>
   new SelectionBuilder<ISchema, "Human", T>(
     SCHEMA as any,
     "Human",
-    select(HumanSelector)
+    select(HumanSelector),
   );
 
 interface IDroidSelector {
@@ -2438,7 +2428,7 @@ interface IDroidSelector {
    */
 
   readonly friends: <T extends ReadonlyArray<Selection>>(
-    select: (t: ICharacterSelector) => T
+    select: (t: ICharacterSelector) => T,
   ) => Field<"friends", never, SelectionSet<T>>;
 
   /**
@@ -2450,10 +2440,10 @@ interface IDroidSelector {
       first?: Variable<string> | number;
       after?: Variable<string> | string;
     },
-    T extends ReadonlyArray<Selection>
+    T extends ReadonlyArray<Selection>,
   >(
     variables: V,
-    select: (t: IFriendsConnectionSelector) => T
+    select: (t: IFriendsConnectionSelector) => T,
   ) => Field<
     "friendsConnection",
     [Argument<"first", V["first"]>, Argument<"after", V["after"]>],
@@ -2494,7 +2484,7 @@ const DroidSelector: IDroidSelector = {
     field(
       "friends",
       undefined as never,
-      selectionSet(select(CharacterSelector))
+      selectionSet(select(CharacterSelector)),
     ),
 
   /**
@@ -2505,7 +2495,7 @@ const DroidSelector: IDroidSelector = {
     field(
       "friendsConnection",
       Object.entries(variables).map(([k, v]) => argument(k, v)) as any,
-      selectionSet(select(FriendsConnectionSelector))
+      selectionSet(select(FriendsConnectionSelector)),
     ),
 
   /**
@@ -2520,12 +2510,12 @@ const DroidSelector: IDroidSelector = {
 };
 
 export const droid = <T extends ReadonlyArray<Selection>>(
-  select: (t: IDroidSelector) => T
+  select: (t: IDroidSelector) => T,
 ) =>
   new SelectionBuilder<ISchema, "Droid", T>(
     SCHEMA as any,
     "Droid",
-    select(DroidSelector)
+    select(DroidSelector),
   );
 
 interface IFriendsConnectionSelector {
@@ -2542,7 +2532,7 @@ interface IFriendsConnectionSelector {
    */
 
   readonly edges: <T extends ReadonlyArray<Selection>>(
-    select: (t: IFriendsEdgeSelector) => T
+    select: (t: IFriendsEdgeSelector) => T,
   ) => Field<"edges", never, SelectionSet<T>>;
 
   /**
@@ -2550,7 +2540,7 @@ interface IFriendsConnectionSelector {
    */
 
   readonly friends: <T extends ReadonlyArray<Selection>>(
-    select: (t: ICharacterSelector) => T
+    select: (t: ICharacterSelector) => T,
   ) => Field<"friends", never, SelectionSet<T>>;
 
   /**
@@ -2558,7 +2548,7 @@ interface IFriendsConnectionSelector {
    */
 
   readonly pageInfo: <T extends ReadonlyArray<Selection>>(
-    select: (t: IPageInfoSelector) => T
+    select: (t: IPageInfoSelector) => T,
   ) => Field<"pageInfo", never, SelectionSet<T>>;
 }
 
@@ -2578,7 +2568,7 @@ const FriendsConnectionSelector: IFriendsConnectionSelector = {
     field(
       "edges",
       undefined as never,
-      selectionSet(select(FriendsEdgeSelector))
+      selectionSet(select(FriendsEdgeSelector)),
     ),
 
   /**
@@ -2589,7 +2579,7 @@ const FriendsConnectionSelector: IFriendsConnectionSelector = {
     field(
       "friends",
       undefined as never,
-      selectionSet(select(CharacterSelector))
+      selectionSet(select(CharacterSelector)),
     ),
 
   /**
@@ -2600,17 +2590,17 @@ const FriendsConnectionSelector: IFriendsConnectionSelector = {
     field(
       "pageInfo",
       undefined as never,
-      selectionSet(select(PageInfoSelector))
+      selectionSet(select(PageInfoSelector)),
     ),
 };
 
 export const friendsConnection = <T extends ReadonlyArray<Selection>>(
-  select: (t: IFriendsConnectionSelector) => T
+  select: (t: IFriendsConnectionSelector) => T,
 ) =>
   new SelectionBuilder<ISchema, "FriendsConnection", T>(
     SCHEMA as any,
     "FriendsConnection",
-    select(FriendsConnectionSelector)
+    select(FriendsConnectionSelector),
   );
 
 interface IFriendsEdgeSelector {
@@ -2627,7 +2617,7 @@ interface IFriendsEdgeSelector {
    */
 
   readonly node: <T extends ReadonlyArray<Selection>>(
-    select: (t: ICharacterSelector) => T
+    select: (t: ICharacterSelector) => T,
   ) => Field<"node", never, SelectionSet<T>>;
 }
 
@@ -2643,17 +2633,16 @@ const FriendsEdgeSelector: IFriendsEdgeSelector = {
    * @description The character represented by this friendship edge
    */
 
-  node: (select) =>
-    field("node", undefined as never, selectionSet(select(CharacterSelector))),
+  node: (select) => field("node", undefined as never, selectionSet(select(CharacterSelector))),
 };
 
 export const friendsEdge = <T extends ReadonlyArray<Selection>>(
-  select: (t: IFriendsEdgeSelector) => T
+  select: (t: IFriendsEdgeSelector) => T,
 ) =>
   new SelectionBuilder<ISchema, "FriendsEdge", T>(
     SCHEMA as any,
     "FriendsEdge",
-    select(FriendsEdgeSelector)
+    select(FriendsEdgeSelector),
   );
 
 interface IPageInfoSelector {
@@ -2674,12 +2663,12 @@ const PageInfoSelector: IPageInfoSelector = {
 };
 
 export const pageInfo = <T extends ReadonlyArray<Selection>>(
-  select: (t: IPageInfoSelector) => T
+  select: (t: IPageInfoSelector) => T,
 ) =>
   new SelectionBuilder<ISchema, "PageInfo", T>(
     SCHEMA as any,
     "PageInfo",
-    select(PageInfoSelector)
+    select(PageInfoSelector),
   );
 
 interface IReviewSelector {
@@ -2713,12 +2702,12 @@ const ReviewSelector: IReviewSelector = {
 };
 
 export const review = <T extends ReadonlyArray<Selection>>(
-  select: (t: IReviewSelector) => T
+  select: (t: IReviewSelector) => T,
 ) =>
   new SelectionBuilder<ISchema, "Review", T>(
     SCHEMA as any,
     "Review",
-    select(ReviewSelector)
+    select(ReviewSelector),
   );
 
 interface IStarshipSelector {
@@ -2741,7 +2730,7 @@ interface IStarshipSelector {
    */
 
   readonly length: <V extends { unit?: Variable<string> | LengthUnit }>(
-    variables: V
+    variables: V,
   ) => Field<"length", [Argument<"unit", V["unit"]>]>;
 
   readonly coordinates: () => Field<"coordinates">;
@@ -2766,18 +2755,18 @@ const StarshipSelector: IStarshipSelector = {
   length: (variables) =>
     field(
       "length",
-      Object.entries(variables).map(([k, v]) => argument(k, v)) as any
+      Object.entries(variables).map(([k, v]) => argument(k, v)) as any,
     ),
   coordinates: () => field("coordinates"),
 };
 
 export const starship = <T extends ReadonlyArray<Selection>>(
-  select: (t: IStarshipSelector) => T
+  select: (t: IStarshipSelector) => T,
 ) =>
   new SelectionBuilder<ISchema, "Starship", T>(
     SCHEMA as any,
     "Starship",
-    select(StarshipSelector)
+    select(StarshipSelector),
   );
 
 interface ISearchResultSelector {
@@ -2785,18 +2774,15 @@ interface ISearchResultSelector {
 
   readonly on: <
     T extends ReadonlyArray<Selection>,
-    F extends "Human" | "Droid" | "Starship"
+    F extends "Human" | "Droid" | "Starship",
   >(
     type: F,
     select: (
-      t: F extends "Human"
-        ? IHumanSelector
-        : F extends "Droid"
-        ? IDroidSelector
-        : F extends "Starship"
-        ? IStarshipSelector
-        : never
-    ) => T
+      t: F extends "Human" ? IHumanSelector
+        : F extends "Droid" ? IDroidSelector
+        : F extends "Starship" ? IStarshipSelector
+        : never,
+    ) => T,
   ) => InlineFragment<NamedType<F>, SelectionSet<T>>;
 }
 
@@ -2808,21 +2794,21 @@ const SearchResultSelector: ISearchResultSelector = {
       case "Human": {
         return inlineFragment(
           namedType("Human"),
-          selectionSet(select(HumanSelector as Parameters<typeof select>[0]))
+          selectionSet(select(HumanSelector as Parameters<typeof select>[0])),
         );
       }
 
       case "Droid": {
         return inlineFragment(
           namedType("Droid"),
-          selectionSet(select(DroidSelector as Parameters<typeof select>[0]))
+          selectionSet(select(DroidSelector as Parameters<typeof select>[0])),
         );
       }
 
       case "Starship": {
         return inlineFragment(
           namedType("Starship"),
-          selectionSet(select(StarshipSelector as Parameters<typeof select>[0]))
+          selectionSet(select(StarshipSelector as Parameters<typeof select>[0])),
         );
       }
 
@@ -2836,10 +2822,10 @@ const SearchResultSelector: ISearchResultSelector = {
 };
 
 export const searchResult = <T extends ReadonlyArray<Selection>>(
-  select: (t: ISearchResultSelector) => T
+  select: (t: ISearchResultSelector) => T,
 ) =>
   new SelectionBuilder<ISchema, "SearchResult", T>(
     SCHEMA as any,
     "SearchResult",
-    select(SearchResultSelector)
+    select(SearchResultSelector),
   );

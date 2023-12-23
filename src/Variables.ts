@@ -1,28 +1,27 @@
 import type { GraphQLSchema, OperationTypeNode } from "graphql";
-import { Kind, visitWithTypeInfo, TypeInfo, visit } from "graphql";
+import { Kind, TypeInfo, visit, visitWithTypeInfo } from "graphql";
 import type { O, U } from "ts-toolbelt";
 
 import {
-  SelectionSet,
-  Selection,
+  Argument,
   Field,
   InlineFragment,
-  Argument,
-  Variable,
-  VariableDefinition,
-  variable,
-  variableDefinition,
   NamedType,
   operation,
+  Selection,
+  SelectionSet,
+  Variable,
+  variable,
+  VariableDefinition,
+  variableDefinition,
 } from "./AST";
 
-export const $ = <Name extends string>(name: Name): Variable<Name> =>
-  variable(name);
+export const $ = <Name extends string>(name: Name): Variable<Name> => variable(name);
 
 export const buildVariableDefinitions = <T extends SelectionSet<any>>(
   schema: GraphQLSchema,
   root: OperationTypeNode,
-  selectionSet: T
+  selectionSet: T,
 ): Array<VariableDefinition<any, any>> => {
   const variableDefinitions: VariableDefinition<any, any>[] = [];
   const typeInfo = new TypeInfo(schema);
@@ -32,7 +31,7 @@ export const buildVariableDefinitions = <T extends SelectionSet<any>>(
     root,
     "",
     selectionSet,
-    variableDefinitions
+    variableDefinitions,
   );
 
   const visitor = visitWithTypeInfo(typeInfo, {
@@ -57,22 +56,19 @@ export const buildVariableDefinitions = <T extends SelectionSet<any>>(
 export type Variables<
   Schema extends Record<string, any>,
   RootType extends Record<string, any>,
-  S extends SelectionSet<ReadonlyArray<Selection>> | undefined
+  S extends SelectionSet<ReadonlyArray<Selection>> | undefined,
 > = U.Merge<
-  undefined extends S
-    ? {}
+  undefined extends S ? {}
     : S extends SelectionSet<ReadonlyArray<Selection>>
-    ? S["selections"][number] extends infer Selection
-      ? Selection extends Field<infer FieldName, infer FieldArgs, infer SS, any>
-        ? O.Merge<
-            FilterMapArguments<RootType, FieldName, FieldArgs>,
-            Variables<Schema, RootType[FieldName], SS>
-          >
+      ? S["selections"][number] extends infer Selection
+        ? Selection extends Field<infer FieldName, infer FieldArgs, infer SS, any> ? O.Merge<
+          FilterMapArguments<RootType, FieldName, FieldArgs>,
+          Variables<Schema, RootType[FieldName], SS>
+        >
         : Selection extends InlineFragment<
-            NamedType<infer Typename>,
-            infer FragSelection
-          >
-        ? Variables<Schema, Schema[Typename], FragSelection>
+          NamedType<infer Typename>,
+          infer FragSelection
+        > ? Variables<Schema, Schema[Typename], FragSelection>
         : {}
       : {}
     : {}
@@ -83,28 +79,24 @@ export type Variables<
 type FilterMapArguments<
   Type extends Record<any, any>,
   FieldName extends string,
-  FieldArgs extends Array<Argument<any, any>> | undefined
+  FieldArgs extends Array<Argument<any, any>> | undefined,
 > = FieldArgs extends Array<Argument<infer ArgName, infer ArgValue>>
-  ? ArgValue extends Variable<infer VName>
-    ? Record<VName, VariableType<Type, FieldName, ArgName>>
-    : {}
+  ? ArgValue extends Variable<infer VName> ? Record<VName, VariableType<Type, FieldName, ArgName>>
+  : {}
   : {};
 
 type VariableType<
   Parent extends Record<any, any>,
   Field extends string,
-  Arg extends string
+  Arg extends string,
 > =
   // see if the field is parameterized
-  Parent[Field] extends (variables: any) => any
-    ? Parameters<Parent[Field]>[0] extends infer U // get the `variables`  arg
-      ? // ensure the "variables" parameter is a Record
-        // @note too-bad JavaScript doesn't support named arguments
-        U extends Record<infer VarName, infer VarType>
-        ? // exract the cooresponding type for the argument
-          VarName extends Arg
-          ? VarType
-          : never
-        : never
-      : never
+  Parent[Field] extends (variables: any) => any ? Parameters<Parent[Field]>[0] extends infer U // get the `variables`  arg
+    ? // ensure the "variables" parameter is a Record
+    // @note too-bad JavaScript doesn't support named arguments
+    U extends Record<infer VarName, infer VarType> ? // exract the cooresponding type for the argument
+    VarName extends Arg ? VarType
+    : never
+    : never
+  : never
     : never;

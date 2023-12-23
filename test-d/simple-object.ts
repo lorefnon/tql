@@ -1,8 +1,8 @@
-import { expectAssignable } from "tsd";
 import freeze from "deep-freeze";
 import { O } from "ts-toolbelt";
+import { expectAssignable } from "tsd";
 
-import { selectionSet, field, Result } from "../src";
+import { field, Result, selectionSet } from "../src";
 
 interface Schema {
   String: string;
@@ -37,17 +37,17 @@ const selection = selectionSet([
       field("firstName"),
       field("age"),
       field("pronouns"),
-    ])
+    ]),
   ),
 ]);
 
 type Test = Result<Schema, Query, typeof selection>;
 
 expectAssignable<Test>(
-  freeze({ viewer: { id: "foo", firstName: "Tim", age: 69, pronouns: [] } })
+  freeze({ viewer: { id: "foo", firstName: "Tim", age: 69, pronouns: [] } }),
 );
 expectAssignable<Test>(
   freeze({
     viewer: { id: "foo", firstName: "Tim", age: null, pronouns: ["xenon"] },
-  })
+  }),
 );

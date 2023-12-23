@@ -1,6 +1,6 @@
 import { expectType } from "tsd";
 
-import { Variables, selectionSet, field, argument, variable } from "../src";
+import { argument, field, selectionSet, variable, Variables } from "../src";
 
 interface Schema {
   String: string;

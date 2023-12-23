@@ -15,92 +15,92 @@
 const sidebars = {
   default: [
     {
-      type: 'category',
-      label: 'Quickstart',
+      type: "category",
+      label: "Quickstart",
       collapsed: false,
       items: [
         {
-          type: 'doc',
-          label: 'Installation',
-          id: 'quickstart/installation'
+          type: "doc",
+          label: "Installation",
+          id: "quickstart/installation",
         },
         {
-          type: 'doc',
-          label: 'Codegen',
-          id: 'quickstart/codegen'
+          type: "doc",
+          label: "Codegen",
+          id: "quickstart/codegen",
         },
         {
-          type: 'doc',
-          label: 'Demo',
-          id: 'quickstart/demo'
+          type: "doc",
+          label: "Demo",
+          id: "quickstart/demo",
         },
-      ]
+      ],
     },
     {
-      type: 'doc',
-      label: 'Operations',
-      id: 'operations'
+      type: "doc",
+      label: "Operations",
+      id: "operations",
     },
     {
-      type: 'doc',
-      label: 'Variables',
-      id: 'variables'
+      type: "doc",
+      label: "Variables",
+      id: "variables",
     },
     {
-      type: 'category',
-      label: 'Fragments',
+      type: "category",
+      label: "Fragments",
       items: [
         {
-          type: 'doc',
-          label: 'Inline',
-          id: 'fragments/inline'
+          type: "doc",
+          label: "Inline",
+          id: "fragments/inline",
         },
         {
-          type: 'doc',
-          label: 'Named',
-          id: 'fragments/named'
+          type: "doc",
+          label: "Named",
+          id: "fragments/named",
         },
-      ]
+      ],
     },
     {
-      type: 'doc',
-      label: 'Directives',
-      id: 'directives'
+      type: "doc",
+      label: "Directives",
+      id: "directives",
     },
     {
-      type: 'category',
-      label: 'Client Examples',
+      type: "category",
+      label: "Client Examples",
       collapsed: false,
       items: [
         {
-          type: 'doc',
-          label: '@apollo/client',
-          id: 'client-examples/apollo'
+          type: "doc",
+          label: "@apollo/client",
+          id: "client-examples/apollo",
         },
         {
-          type: 'doc',
-          label: 'graphql-request',
-          id: 'client-examples/graphql-request'
+          type: "doc",
+          label: "graphql-request",
+          id: "client-examples/graphql-request",
         },
         {
-          type: 'doc',
-          label: 'urql',
-          id: 'client-examples/urql'
+          type: "doc",
+          label: "urql",
+          id: "client-examples/urql",
         },
-      ]
+      ],
     },
     {
-      type: 'category',
-      label: 'API',
+      type: "category",
+      label: "API",
       items: [
         {
-          type: 'doc',
-          label: 'Selection',
-          id: 'api/selection'
+          type: "doc",
+          label: "Selection",
+          id: "api/selection",
         },
-      ]
+      ],
     },
-  ]
+  ],
 };
 
 module.exports = sidebars;

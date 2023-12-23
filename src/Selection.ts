@@ -1,5 +1,5 @@
-import type { GraphQLSchema } from "graphql/type";
 import { OperationTypeNode, print } from "graphql/language";
+import type { GraphQLSchema } from "graphql/type";
 // @note v16+ of graphql-js exposes their own version of a typed DocumentNode
 // See https://github.com/dotansimha/graphql-typed-document-node/issues/68
 //
@@ -7,16 +7,9 @@ import { OperationTypeNode, print } from "graphql/language";
 import type { TypedDocumentNode } from "@graphql-typed-document-node/core";
 
 import type * as AST from "./AST";
-import {
-  fragmentDefinition,
-  inlineFragment,
-  namedType,
-  selectionSet,
-  operation,
-  document,
-} from "./AST";
+import { document, fragmentDefinition, inlineFragment, namedType, operation, selectionSet } from "./AST";
 import { Result } from "./Result";
-import { Variables, buildVariableDefinitions } from "./Variables";
+import { buildVariableDefinitions, Variables } from "./Variables";
 
 type Element<T> = T extends Array<infer U> ? U : never;
 
@@ -28,13 +21,13 @@ interface OperationOpts {
 
 export class Selection<
   Schema extends Record<string, any>,
-  RootType extends string /* @todo keyof Schema*/,
-  T extends ReadonlyArray<AST.Selection>
+  RootType extends string, /* @todo keyof Schema*/
+  T extends ReadonlyArray<AST.Selection>,
 > extends Array<Element<T>> {
   constructor(
     public readonly schema: GraphQLSchema,
     public readonly type: RootType,
-    public readonly selections: T
+    public readonly selections: T,
   ) {
     super(...(selections as unknown as Element<T>[]) /* seems wrong*/);
   }
@@ -44,7 +37,7 @@ export class Selection<
   }
 
   toFragment<Name extends string>(
-    name: Name
+    name: Name,
   ): AST.FragmentDefinition<
     Name,
     AST.NamedType<this["type"]>,
@@ -53,7 +46,7 @@ export class Selection<
     return fragmentDefinition(
       name,
       namedType(this.type),
-      selectionSet(this.selections)
+      selectionSet(this.selections),
     );
   }
 
@@ -70,9 +63,9 @@ export class Selection<
   > {
     // @todo statically gate?
     if (
-      this.type !== "Query" &&
-      this.type !== "Mutation" &&
-      this.type !== "Subscription"
+      this.type !== "Query"
+      && this.type !== "Mutation"
+      && this.type !== "Subscription"
     ) {
       throw new Error("Cannot convert non-root type to query.");
     }
@@ -82,14 +75,14 @@ export class Selection<
     const variableDefinitions = buildVariableDefinitions(
       this.schema,
       op,
-      selectionSet
+      selectionSet,
     );
 
     const operationDefinition = operation(
       op,
       options?.queryName ?? "Anonymous",
       selectionSet,
-      variableDefinitions
+      variableDefinitions,
     );
 
     return document([operationDefinition]) as TypedDocumentNode<
@@ -98,8 +91,8 @@ export class Selection<
     >;
   }
 
-  /** 
-   * @deprecated - Retained for backward compatibility 
+  /**
+   * @deprecated - Retained for backward compatibility
    * @use build
    */
   toQuery(options?: OperationOpts): TypedDocumentNode<
@@ -117,7 +110,7 @@ export class Selection<
 export class TypeConditionError extends Error {
   constructor(metadata: { selectedType: string; abstractType: string }) {
     super(
-      `"${metadata.selectedType}" is not a valid type of abstract "${metadata.abstractType}" type.`
+      `"${metadata.selectedType}" is not a valid type of abstract "${metadata.abstractType}" type.`,
     );
   }
 }

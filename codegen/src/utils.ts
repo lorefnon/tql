@@ -1,11 +1,11 @@
 import {
-  GraphQLInputType,
-  GraphQLOutputType,
-  GraphQLNonNull,
-  GraphQLList,
-  GraphQLScalarType,
-  GraphQLNamedType,
   GraphQLEnumType,
+  GraphQLInputType,
+  GraphQLList,
+  GraphQLNamedType,
+  GraphQLNonNull,
+  GraphQLOutputType,
+  GraphQLScalarType,
 } from "graphql";
 
 export function toUpper(word: string): string {
@@ -47,7 +47,7 @@ export function listType(type: GraphQLOutputType | GraphQLInputType): boolean {
 }
 
 export const toPrimitive = (
-  scalar: GraphQLScalarType
+  scalar: GraphQLScalarType,
 ): "number" | "string" | "boolean" => {
   switch (scalar.name) {
     case "ID":
