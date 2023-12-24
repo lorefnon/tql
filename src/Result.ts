@@ -96,5 +96,5 @@ export type SelectionResult<TSelection> = TSelection extends {
 export type SelectionVars<TSelection> = TSelection extends {
   build(opts: any): TypedDocumentNode<infer _ResultType, infer VariablesType>;
 } ? VariablesType
-  : never;
+  : {};
 
