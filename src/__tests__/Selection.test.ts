@@ -46,7 +46,7 @@ describe("Selection", () => {
 
     expect(
       selection.toString({
-        queryName: "createUser",
+        name: "createUser",
       }),
     )
       .toMatchInlineSnapshot(`

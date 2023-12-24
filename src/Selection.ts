@@ -14,7 +14,7 @@ import { buildVariableDefinitions, Variables } from "./Variables";
 type Element<T> = T extends Array<infer U> ? U : never;
 
 interface OperationOpts {
-  queryName?: string;
+  name?: string;
   useVariables?: boolean;
   dropNullInputValues?: boolean;
 }
@@ -80,7 +80,7 @@ export class Selection<
 
     const operationDefinition = operation(
       op,
-      options?.queryName ?? "Anonymous",
+      options?.name ?? "Anonymous",
       selectionSet,
       variableDefinitions,
     );
@@ -103,7 +103,7 @@ export class Selection<
   }
 
   toString(options?: OperationOpts) {
-    return print(this.toQuery(options));
+    return print(this.build(options));
   }
 }
 
