@@ -88,6 +88,13 @@ type HasInlineFragment<T extends SelectionSet<any> | undefined> = T extends Sele
 
 type Merge<M, N> = Omit<M, keyof N> & N;
 
-export type SelectionResult<TSelection> = TSelection extends
-  { toQuery(opts: any): TypedDocumentNode<infer ResultType, infer _VariablesType> } ? ResultType
+export type SelectionResult<TSelection> = TSelection extends {
+  build(opts: any): TypedDocumentNode<infer ResultType, infer _VariablesType>;
+} ? ResultType
   : never;
+
+export type SelectionVars<TSelection> = TSelection extends {
+  build(opts: any): TypedDocumentNode<infer _ResultType, infer VariablesType>;
+} ? VariablesType
+  : never;
+
